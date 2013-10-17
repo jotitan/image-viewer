@@ -22,7 +22,7 @@
    <img class="imageHD"/>
    <img class="imageHD"/>
    <button style="position:absolute;right:10px;z-index:3" id="idClose">Fermer</button>
-   <img src="/viewer/styles/img/ajax-loader.gif" style="display:none" class="loader">
+   <img src="/image-viewer/styles/img/ajax-loader.gif" style="display:none" class="loader">
 </div>
 
 <div style="display:none;top:5px;left:5px;position:absolute;background-color:white;width:80px;height:80px;border-radius:10px;z-index:15" id="idEtatCache">
@@ -44,15 +44,16 @@ require_once("src/dao/CacheDao.php");
 ?>
 
 <script language="Javascript">
-var contextPath = "http://" + location.host + "/viewer";
-var cacheUrl = "/viewer/src/action/CacheAction.php?file=";
+var basename = "/image-viewer";
+var contextPath = "http://" + location.host + basename;
+var cacheUrl = basename + "/src/action/CacheAction.php?file=";
 var currentRoot = "";
 var currentDirectory = ""; // repertoire courant
 var currentPhoto = "";  // Photo courante
 
 /* Vide le cache de requuete */
 function flush(){
-   $.ajax({url:"/viewer/src/action/FileAction.php?action=2"})
+   $.ajax({url:basename + "/src/action/FileAction.php?action=2"})
 }
 
 /* Barre de progression */
@@ -247,7 +248,7 @@ var FolderManager = {
        CheminFer.change(currentRoot);
        currentDirectory = currentRoot;
         $.ajax({
-           url:"/viewer/src/action/FileAction.php",
+           url:basename + "/src/action/FileAction.php",
            data:{action:1,root:currentRoot.replace("\\","\\\\")},
            success:function(data){
              FolderManager.showFolders(data);
@@ -275,7 +276,7 @@ var FolderManager = {
             // on affiche progressivement les images (10 par 10)
             if(this.type == "IMG"){
                var img = currentRoot + "/" + this.name;
-               images.push($('<li data-type="img" data-name="' + img + '"><img src="/viewer/src/action/CacheAction.php?file=' + img + '&format=LOW"/></li>'));
+               images.push($('<li data-type="img" data-name="' + img + '"><img src="' + basename + '/src/action/CacheAction.php?file=' + img + '&format=LOW"/></li>'));
             }
          }
       });
@@ -290,7 +291,6 @@ var FolderManager = {
    },
    /* Affiche les images par bloc de longueur size. Permet de fluidifier le chargement */
    showImagesByBorne:function(images,from,size){
-      console.log("Load : " + from + " " + size + " " + images.length)
       for(var i = from ; i < from + size && i < images.length ; i++){
          images[i].data('timestamp',new Date().getTime());
          FolderManager.divFolders.append(images[i]);
@@ -301,7 +301,6 @@ var FolderManager = {
       // Quand on atteint un palier de 10, on affiche
       if(nb%this.blocSize == 0){
          // on charge
-         console.log("from : " + nb);
          this.showImagesByBorne(this.currentImages,nb,this.blocSize);
       }
    },
@@ -320,9 +319,9 @@ var FolderManager = {
       }
       currentPhoto = photo;
       currentRoot = photo;
-      history.pushState(photo,"Image",'/viewer/' + photo);
+      history.pushState(photo,"Image",basename + '/' + photo);
       var img = photo + "&format=HD";
-      this.divImage.find('img.imageHD:not(.active):first').attr('src','/viewer/src/action/CacheAction.php?file=' + img).addClass('onload_image');
+      this.divImage.find('img.imageHD:not(.active):first').attr('src',basename + '/src/action/CacheAction.php?file=' + img).addClass('onload_image');
    },
    /* affiche l'image qui vient d'etre chargee*/
    showLoadedPhoto : function(){
@@ -354,7 +353,7 @@ var FolderManager = {
       var photo = currentPhoto;
       this._deletePhotoFromUI();
       $.ajax({
-         url:'/viewer/src/action/FileAction.php?photo=' + photo,
+         url:basename + '/src/action/FileAction.php?photo=' + photo,
          type:'DELETE',
          success:function(data){
             if(data!=null && data.message == "ok"){
@@ -463,7 +462,7 @@ function init(loadUrl){
       // Gere le retour arriere
     $(window).bind('popstate',function(state){
          // On recupere le chemin
-         currentRoot = state.target.location.pathname.replace("/viewer/","");
+         currentRoot = state.target.location.pathname.replace(basename + "/","");
          FolderManager.loadUrl(currentRoot);
     });
 

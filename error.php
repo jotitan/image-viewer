@@ -3,9 +3,9 @@
   <head>
   <?php
 
-   if(stripos($_SERVER["REDIRECT_URL"],"/viewer/") == 0){
-      $url = str_replace("/viewer/","",$_SERVER["REDIRECT_URL"]);
-      echo "<meta http-equiv=\"refresh\" content=\"0; URL=/viewer?url=" . $url . "\">";
+   if(stripos($_SERVER["REDIRECT_URL"],"/image-viewer/") == 0){
+      $url = str_replace("/image-viewer/","",$_SERVER["REDIRECT_URL"]);
+      echo "<meta http-equiv=\"refresh\" content=\"0; URL=/image-viewer?url=" . $url . "\">";
    }
 
    ?>
