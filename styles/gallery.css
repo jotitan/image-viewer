@@ -1,0 +1,73 @@
+
+.chemin {
+   padding:5px;
+   padding-left:20px;
+   background:linear-gradient(to right bottom, white, lightgrey, black);
+   background-color:lightgrey;
+   border-radius:5px;
+}
+
+body {
+   background-color:black;
+}
+
+ul#folders {
+   padding-top:20px;
+   padding-bottom:20px;
+}
+
+li {
+   display:inline-block;
+   width:235px;
+   text-align:center;
+}
+
+li[data-type="dir"] {
+   height:50px;
+   background:linear-gradient(to right bottom,rgb(255,247,176),rgb(246,220,112));
+   background-color:rgb(255,247,176);
+   margin:5px;
+   margin-bottom:45px;
+   width:225px;
+   padding-top:20px;
+   vertical-align:bottom;
+   cursor:pointer;
+}
+
+li[data-type="img"] {
+   cursor:pointer;
+}
+
+li[data-type="img"] > img {
+   border-radius : 5px;
+   border : solid 2px white;
+}
+
+#idImage {
+   /*height:100%;
+   width:100%;*/
+   max-width:100%;
+   background-color:black;
+   text-align:center;
+   position:absolute;
+   left:0;
+   top:0;
+}
+
+.imageHD {
+   position:absolute;
+   display:none;
+   left:0;
+   right:0;
+   margin:auto;
+   height:99%;
+}
+
+
+img.loader {
+   position:absolute;
+   top:45%;
+   left:0;
+   right:0;
+   margin:auto;
+}
