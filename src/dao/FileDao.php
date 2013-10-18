@@ -3,15 +3,13 @@
 require_once("../bean/Folder.php");
 require_once("../dao/CacheRequeteDao.php");
 
-class FileDao{
-   static $rootFolder = "y:\\PHOTOS\\"; // Repertoire de base ou se trouve les photos
-   static $winRootFolder = "y:\\PHOTOS\\"; // Repertoire de base ou se trouve les photos
-   static $corbeilleFolder = "y:\\CORBEILLE\\";
-   static $logfile = "D:\\Logs\\Viewer\\suppression_photo.log";
+include_once("../../config.php");
 
+class FileDao{
+   
    /* Liste les repertoires */
     function listFolders($root){
-      $root = FileDao::$rootFolder . $root;
+      $root = $GLOBALS["rootFolder"] . $root;
        $list = array();
         foreach(scandir($root) as $dir){
           if($dir!="." && $dir != ".."){
@@ -28,9 +26,9 @@ class FileDao{
 
    /* Supprime une photo en la deplacant dans un repertoire. On log les suppressions. */
    function deletePhoto($photo){
-      $fileToDelete = str_replace("/","\\",FileDao::$rootFolder . $photo);
-      $deleteName = FileDao::$corbeilleFolder . str_replace("/","_",$photo);
-      error_log("[" . date("d-m-Y H:i:s") . "] Suppression photo : " . $photo . "\r\n",3,FileDao::$logfile);
+      $fileToDelete = str_replace("/","\\",$GLOBALS["rootFolder"] . $photo);
+      $deleteName = $GLOBALS["corbeilleFolder"] . str_replace("/","_",$photo);
+      error_log("[" . date("d-m-Y H:i:s") . "] Suppression photo : " . $photo . "\r\n",3,$GLOBALS["logfile"]);
       if(copy($fileToDelete,$deleteName)){
          // On supprime la source
          if(unlink($fileToDelete)){

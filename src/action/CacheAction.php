@@ -4,8 +4,9 @@
 
 require_once("../dao/CacheDao.php");
 require_once("../dao/FileDao.php");
+include_once("../../config.php");
 
-$filename = FileDao::$winRootFolder . $_GET["file"];
+$filename = $GLOBALS["rootFolder"] . $_GET["file"];
 $format = $_GET["format"];
 
 header("Content-type:image/jpeg");

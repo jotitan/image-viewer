@@ -9,3 +9,8 @@ Gestion d'un cache d'image (redimensionnement à la volée miniature et version 
 Sauvegarde de l'arborescence des fichiers dans un cache memcached (listing des répertoires / fichiers trop long).
 Permet la suppression des photos (log de l'action + deplacement dans un répertoire corbeille).
 Prend en charge le swipe pour naviguer dans les photos.
+
+Il faut configurer le fichier config.php avec les chemins suivants :
+* Chemin du répertoire photo
+* Chemin du répertoire de cache
+* Chemin du répertoire de la corbeille

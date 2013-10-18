@@ -1,8 +1,8 @@
 <?php
 
+include_once("../../config.php");
+
 class CacheDao {
-   static $cacheFolder = "\\\\Freebox\\Drobo\\DATA\CACHE\\";
-   static $windowsCacheFolder = "y:\\DATA\\CACHE\\";
    static $windowsSoftware = "\"c:\Program Files (x86)\IrfanView\i_view32.exe\" ";
    static $availableFormats = array(
       "THU"=>100,
@@ -13,15 +13,14 @@ class CacheDao {
    );
 
 
-   public static function getFile($filename,$format){
+   static function getFile($filename,$format){
       // On verifie le format
       if(!array_key_exists($format,CacheDao::$availableFormats)){
          throw new Exception("Format " . $format . " inconnu");
       }
       //$f = CacheDao::defineFilename($filename,$format,CacheDao::$cacheFolder);
-      $winOut = CacheDao::defineFilename($filename,$format,CacheDao::$windowsCacheFolder);
+      $winOut = CacheDao::defineFilename($filename,$format,$GLOBALS["cacheFolder"]);
       if(!CacheDao::isPhotoInCache($winOut)){
-         error_log("Calcule image " . $filename);
          CacheDao::resizeImageWindows($filename,$winOut,CacheDao::$availableFormats[$format]);
     		//CacheDao::resizeImage($filename,$f,CacheDao::$availableFormats[$format]);
     	}
@@ -29,7 +28,7 @@ class CacheDao {
    }
 
 static function resizeImageWindows($fileIn,$fileOut,$height){
-   $command = CacheDao::$windowsSoftware . " " . str_replace("/","\\",$fileIn)
+   $command = $GLOBALS["windowsSoftware"] . " " . str_replace("/","\\",$fileIn)
       . " /jpgq=80 /resize=(0," . $height . ") /resample /aspectratio /convert=" . $fileOut;
    system($command);
 }
