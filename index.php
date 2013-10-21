@@ -1,6 +1,6 @@
  <!DOCTYPE html>
 
-<html>
+<html data-enhance="false">
 
 <head>
 <script src="lib/jquery-1.9.1.min.js"></script>
@@ -8,7 +8,7 @@
 <script src="lib/gauge.min.js"></script>
 <script src="lib/jquery.widget.bindkey.js"></script>
 <script src="lib/jquery.percentageloader-0.1.min.js"></script>
-<script src="lib/jquery.mobile-1.3.2.min.js"></script>
+<script src="lib/jquerypp.custom.js"></script>
 
 
 
@@ -19,7 +19,7 @@
 
 <body>
 
-<div id="idImage" style="display:none;z-index:10">
+<div id="idImage" style="display:none;z-index:10;">
    <div style="position: absolute;z-index: 2; width: 99%; height: 99%;"></div>
    <img class="imageHD"/>
    <img class="imageHD"/>
@@ -39,13 +39,12 @@
 </div>
 
 <ul id="folders"></ul>
-<?php
 
-require_once("src/dao/CacheDao.php");
-
-?>
 <script src="js/viewer.js"></script>
 <script language="Javascript">
+    $(document).on('mobileinit', function () {
+        $.mobile.ignoreContentEnabled = true;
+    });
    init(<?php echo ((isset($_GET) && isset($_GET['url']))?"'".$_GET["url"]."'":''); ?>);
 </script>
 

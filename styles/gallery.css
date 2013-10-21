@@ -5,10 +5,14 @@
    background:linear-gradient(to right bottom, white, lightgrey, black);
    background-color:lightgrey;
    border-radius:5px;
+   position: fixed;
+   width:100%;
+   top:0px;
 }
 
 body {
    background-color:black;
+   margin:0;
 }
 
 ul#folders {
@@ -18,7 +22,7 @@ ul#folders {
 
 li {
    display:inline-block;
-   width:235px;
+   width:215px;
    text-align:center;
 }
 
@@ -28,7 +32,7 @@ li[data-type="dir"] {
    background-color:rgb(255,247,176);
    margin:5px;
    margin-bottom:45px;
-   width:225px;
+   width:215px;
    padding-top:20px;
    vertical-align:bottom;
    cursor:pointer;
@@ -36,6 +40,10 @@ li[data-type="dir"] {
 
 li[data-type="img"] {
    cursor:pointer;
+}
+
+li[data-type="img"] > img {
+   height:140px;
 }
 
 li[data-type="img"] > img {

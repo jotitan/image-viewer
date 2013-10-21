@@ -186,12 +186,13 @@ var FolderManager = {
    cache:new Array(),   // cache d'image (charge les 5 prochaines)
    currentImages:null,  // Image actuellement affichees
    /* Charge le repertoire a partir d'une url */
-   loadUrl : function(url){
+   /* Il ne faut sauvegarger l'histo lors du resfresh (car url en param) */
+   loadUrl : function(url,noRefresh){
        if(url.toLowerCase().match(new RegExp(/\.[a-z]{2,4}/))){
           this.loadPhoto(url);
        }
        else{
-          this.loadFolder(url,true);
+          this.loadFolder(url,!noRefresh);
        }
    },
    /* Requete serveur : recupere le contenu d'un repertoire */
@@ -436,7 +437,7 @@ function init(loadUrl){
        })
    }
    if(loadUrl && loadUrl!=''){
-      FolderManager.loadUrl(loadUrl);
+      FolderManager.loadUrl(loadUrl,true);
    }
    else{
       FolderManager.getContentFolder();
