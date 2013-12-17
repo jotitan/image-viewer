@@ -202,9 +202,13 @@ var FolderManager = {
        }
        CheminFer.change(currentRoot);
        currentDirectory = currentRoot;
+       var formatRoot = currentRoot.replace("\\","\\\\");
+       if(formatRoot.indexOf("/") == formatRoot.length - 1){
+         formatRoot = formatRoot.substr(0,formatRoot.length -1);
+       }
         $.ajax({
            url:basename + "/src/action/FileAction.php",
-           data:{action:1,root:currentRoot.replace("\\","\\\\")},
+           data:{action:1,root:formatRoot},
            success:function(data){
              FolderManager.showFolders(data);
            }
@@ -300,6 +304,24 @@ var FolderManager = {
       this.hidePhoto();
       this.loadFolder(currentRoot.substring(0,pos));
     },
+    /* C opie la photo dans un repertoire temporaire*/
+    copyPhoto : function(){
+      $.ajax({
+         url:basename + '/src/action/FileAction.php?action=3&photo=' + currentPhoto,
+         type:'POST',
+         success:function(data){
+            if(data!=null && data.message == "ok"){
+
+            }
+            else{
+               alert("probleme de copie");
+            }
+         },
+         error:function(){
+            alert("probleme de copie");
+         }
+      })
+    },
     /* Deplace la photo dans un repertoire poubelle */
     deletePhoto : function(){
       if(!confirm("Etes vous sur de vouloir supprimer la photo")){return;}
@@ -321,7 +343,7 @@ var FolderManager = {
          error:function(){
             alert("probleme de suppression");
          }
-      })
+      });
     },
     _deletePhotoFromUI:function(){
         var photo = currentPhoto;
@@ -384,6 +406,7 @@ var FolderManager = {
           $('body').bindkey({key:37,action:function(){FolderManager.previousPhoto();}})
           $('body').bindkey({key:39,action:function(){FolderManager.nextPhoto();}})
           $('body').bindkey({key:46,action:function(){FolderManager.deletePhoto();}})
+          $('body').bindkey({key:86,action:function(){FolderManager.copyPhoto();}})
       }catch(e){
          console.log(e);
       }

@@ -1,9 +1,9 @@
 <?php
 
 include_once("../../config.php");
+include_once("../lib/phmagick.php");
 
 class CacheDao {
-   static $windowsSoftware = "\"c:\Program Files (x86)\IrfanView\i_view32.exe\" ";
    static $availableFormats = array(
       "THU"=>100,
       "LOW"=>150,
@@ -22,7 +22,8 @@ class CacheDao {
       $winOut = CacheDao::defineFilename($filename,$format,$GLOBALS["cacheFolder"]);
       if(!CacheDao::isPhotoInCache($winOut)){
          CacheDao::resizeImageWindows($filename,$winOut,CacheDao::$availableFormats[$format]);
-    		//CacheDao::resizeImage($filename,$f,CacheDao::$availableFormats[$format]);
+         //CacheDao::resizeImageMagic($filename,$winOut,CacheDao::$availableFormats[$format]);
+          //CacheDao::resizeImage($filename,$f,CacheDao::$availableFormats[$format]);
     	}
     	return $winOut;
    }
@@ -34,9 +35,16 @@ static function resizeImageWindows($fileIn,$fileOut,$height){
 }
 
 static function resizeImageMagic($fileIn,$fileOut,$height){
-   $command = "convert " . str_replace("/","\\",$fileIn) . "-resize x" . $height
-      . " -auto-orient -interpolate bicubic -quality 80 " . $fileOut;
-   system($command);
+   $ph = new phMagick(str_replace("/","\\",$fileIn),$fileOut);
+   $ph->setImageMagickPath($GLOBALS["imageMagick"]);
+   $ph->resize(0,$height);
+
+   /*$command = "convert " . str_replace("/","\\",$fileIn) . " -resize 'x" . $height . "'' -auto-orient -interpolate bicubic -quality 80 " . $fileOut;
+   exec($command,$tab,$ret);
+   var_dump($tab);
+   echo $ret;*/
+   
+
 }
 
 /* Redimensionne l'image au bon format. On fixe la hauteur ? */
@@ -67,8 +75,13 @@ static function isPhotoInCache($file){
 
    static function defineFilename($file,$format,$cacheFolder){
     	$md5 = md5($format . "_" . $file);
+      // Les 3 premiers caracteres permettent de faire un sous repertoire
+      $base = $cacheFolder . substr($md5,0,2);
+      if(!file_exists($base)){
+         mkdir($base);
+      }
       $info = pathinfo($file);
-    	return $cacheFolder . $md5 . "." . $info["extension"];
+    	return $base . "\\" . $md5 . "." . $info["extension"];
     }
 }
 

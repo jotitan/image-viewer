@@ -25,7 +25,10 @@ class FileService{
       echo "{\"message\":\"ok\"}";
    }
 
-
+   function copyPhoto($photo){
+      $this->dao->copyTempPhoto($photo);
+      echo "{\"message\":\"ok\"}";
+   }
 
 }
 

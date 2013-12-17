@@ -28,7 +28,7 @@ class FileDao{
    function deletePhoto($photo){
       $fileToDelete = str_replace("/","\\",$GLOBALS["rootFolder"] . $photo);
       $deleteName = $GLOBALS["corbeilleFolder"] . str_replace("/","_",$photo);
-      error_log("[" . date("d-m-Y H:i:s") . "] Suppression photo : " . $photo . "\r\n",3,$GLOBALS["logfile"]);
+      error_log("[" . date("d-m-Y H:i:s") . "] Suppression photo : " . $photo . "\r\n",3,$GLOBALS["deleteLogfile"]);
       if(copy($fileToDelete,$deleteName)){
          // On supprime la source
          if(unlink($fileToDelete)){
@@ -38,6 +38,14 @@ class FileDao{
          }
       }
 
+   }
+
+   /* Copie la photo dans un repertoire temporaire */
+   function copyTempPhoto($photo){
+      $srcImage = str_replace("/","\\",$GLOBALS["rootFolder"] . $photo);
+      $copyName = $GLOBALS["tempCopyFolder"] . str_replace("/","_",$photo);
+      error_log("[" . date("d-m-Y H:i:s") . "] Copie photo : " . $photo . "\r\n",3,$GLOBALS["copyLogfile"]);
+      copy($srcImage,$copyName);
    }
 }
 ?>

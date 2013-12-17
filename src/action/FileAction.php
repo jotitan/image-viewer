@@ -52,6 +52,9 @@ case 1 :
 case 2 :
    $cache->flush();
    return;
+case 3 :
+   $service->copyPhoto($_POST['photo']);
+   return;
 default : break;
 
 }
